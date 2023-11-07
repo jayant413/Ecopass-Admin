@@ -50,13 +50,7 @@ const RegisterAdmin = () => {
         toast({ title: "Password is not confirmed" });
         return;
       }
-      const response = await api.post("/admin/register", {
-        name: values.name,
-        email_id: values.email_id,
-        mobile_number: values.mobile_number,
-        aadhaar_no: values.aadhaar_no,
-        password: values.password,
-      });
+      const response = await api.post("/admin/register", values);
 
       if (response.data.success) router.push("/login-admin");
       else toast({ title: "Something went wrong" });
@@ -71,26 +65,30 @@ const RegisterAdmin = () => {
   };
 
   return (
-    <div className="bg-white py-5 px-5 rounded-md">
+    <div className="bg-white py-5 px-5 rounded-md space-y-3 ">
       <Form {...form}>
-        <h4 className="font-bold text-xl text-gray-700 mb-4">Register Admin</h4>
+        <h4 className="font-bold text-xl text-gray-700 mb-4">
+          Admin Registeration
+        </h4>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className=" grid md:grid-cols-2 "
+          className=" grid md:grid-cols-2 space-x-3 space-y-3 "
         >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Admin name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="translate-x-3 translate-y-3 pr-3">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Admin name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="email_id"
@@ -104,6 +102,7 @@ const RegisterAdmin = () => {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="mobile_number"
@@ -160,10 +159,14 @@ const RegisterAdmin = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="mt-3 ">
-            Submit
-          </Button>
-          <a href="/login-admin">Already have an account?</a>
+          <div className="w-full space-x-2 flex justify-between">
+            <Button type="submit" className="">
+              Submit
+            </Button>
+          </div>
+          <a href="/login-admin" className="text-blue-500 translate-y-2">
+            Already have an account?
+          </a>
         </form>
       </Form>
     </div>

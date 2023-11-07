@@ -1,10 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import * as z from "zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -38,23 +38,19 @@ const LoginAdmin = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await api.post("/admin/login", {
-        email_id: values.email_id,
-        password: values.password,
-      });
+      const response = await api.post("/admin/login", values);
 
-      if (response.data.success) {
-        localStorage.setItem("token", response.data.data.token);
+      if (response?.data?.success) {
         toast({ title: "Logged in successfully" });
         router.push("/");
       } else toast({ title: "Something went wrong" });
       //
     } catch (error: any) {
       //
-      if (error.response.status == 404) {
+      if (error?.response?.status == 404) {
         toast({ title: "Not Registered Please Register First" });
         router.push("/register-admin");
-      } else if (error.response.status == 401) {
+      } else if (error?.response?.status == 401) {
         toast({ title: "Password is incorrect" });
       } else toast({ title: "Something went wrong" });
     }
@@ -65,7 +61,7 @@ const LoginAdmin = () => {
       <Form {...form}>
         <h4 className="font-bold text-xl text-gray-700 mb-4">Admin Login</h4>
 
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
           <FormField
             control={form.control}
             name="email_id"
@@ -93,10 +89,14 @@ const LoginAdmin = () => {
             )}
           />
 
-          <Button type="submit" className="mt-3 ">
-            Submit
-          </Button>
-          <a href="/register-admin">Create an account.</a>
+          <div className="w-full space-x-3 flex justify-between">
+            <Button type="submit" className="">
+              Submit
+            </Button>
+            <a href="/register-admin" className="text-blue-500 translate-y-2">
+              Create an account?
+            </a>
+          </div>
         </form>
       </Form>
     </div>
