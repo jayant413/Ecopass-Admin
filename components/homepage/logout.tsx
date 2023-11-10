@@ -5,10 +5,9 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
-const LogOut = () => {
+const LogOut = ({ token }: any) => {
   const router = useRouter();
   const { toast } = useToast();
-  const token = localStorage.getItem("token");
 
   if (!token) {
     router.push("/login-admin");
@@ -17,7 +16,6 @@ const LogOut = () => {
     <div>
       <Button
         onClick={() => {
-          localStorage.removeItem("token");
           toast({
             title: "Logged out successfully",
           });

@@ -62,9 +62,9 @@ export const InitialModal = () => {
       });
 
       if (response.data.success) {
+        toast({ title: "Organiazaion created successfully" });
         form.reset();
         router.refresh();
-        window.location.reload();
       } else toast({ title: "Something went wrong" });
     } catch (error) {
       toast({ title: "Something went wrong" });

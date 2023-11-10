@@ -1,12 +1,7 @@
+import LogOut from "@/components/homepage/logout";
 import Mounted from "@/components/mounted";
-import { LogOut } from "lucide-react";
-import { redirect } from "next/navigation";
 
-const Organizaion = () => {
-  const organization = 0;
-
-  if (!organization) return redirect(`/`);
-
+const OrganizaionID = () => {
   return (
     <Mounted>
       <LogOut />
@@ -14,4 +9,4 @@ const Organizaion = () => {
   );
 };
 
-export default Organizaion;
+export default OrganizaionID;
