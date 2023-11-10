@@ -39,10 +39,10 @@ const LoginAdmin = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await api.post("/admin/login", values);
-
       if (response?.data?.success) {
         toast({ title: "Logged in successfully" });
         router.push("/");
+        router.refresh();
       } else toast({ title: "Something went wrong" });
       //
     } catch (error: any) {
