@@ -22,8 +22,8 @@ import api from "@/helpers/api";
 const formSchema = z.object({
   name: z.string().min(2).max(50),
   email_id: z.string().min(5),
-  mobile_number: z.string().min(9).max(11),
-  aadhaar_no: z.string().min(11).max(13),
+  mobile_number: z.string().length(10),
+  aadhaar_no: z.string().length(12),
   password: z.string().min(3),
   confirm_password: z.string().min(3),
 });
@@ -47,17 +47,19 @@ const RegisterAdmin = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       if (values.password != values.confirm_password) {
-        toast({ title: "Password is not confirmed" });
+        toast({ title: "Password missmatched" });
         return;
       }
       const response = await api.post("/admin/register", values);
 
-      if (response.data.success) router.push("/login-admin");
-      else toast({ title: "Something went wrong" });
+      if (response.data.success) {
+        router.push("/login-admin");
+        toast({ title: "Registered successfully" });
+      } else toast({ title: "Something went wrong" });
       //
     } catch (error: any) {
       //
-      if (error.response.status == 409) {
+      if (error?.response?.status == 409) {
         toast({ title: "Already Registered Please Login" });
         router.push("/login-admin");
       } else toast({ title: "Something went wrong" });
@@ -82,7 +84,7 @@ const RegisterAdmin = () => {
                 <FormItem>
                   <FormLabel>Admin name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Name" {...field} />
+                    <Input placeholder="Name Surname" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -123,7 +125,11 @@ const RegisterAdmin = () => {
               <FormItem>
                 <FormLabel>Admin Aadhaar Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="Aadhaar Number" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="Aadhaar Number"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -159,14 +165,14 @@ const RegisterAdmin = () => {
               </FormItem>
             )}
           />
-          <div className="w-full space-x-2 flex justify-between">
+          <a href="/login-admin" className="text-blue-500 translate-y-2">
+            Already have an account?
+          </a>
+          <div className="w-full space-x-2  justify-start flex md:justify-end md:pr-4">
             <Button type="submit" className="">
               Submit
             </Button>
           </div>
-          <a href="/login-admin" className="text-blue-500 translate-y-2">
-            Already have an account?
-          </a>
         </form>
       </Form>
     </div>

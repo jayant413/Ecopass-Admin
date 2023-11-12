@@ -48,10 +48,9 @@ const LoginAdmin = () => {
     } catch (error: any) {
       //
       if (error?.response?.status == 404) {
-        toast({ title: "Not Registered Please Register First" });
-        router.push("/register-admin");
+        toast({ title: "Email not registered" });
       } else if (error?.response?.status == 401) {
-        toast({ title: "Password is incorrect" });
+        toast({ title: "Incorrect password" });
       } else toast({ title: "Something went wrong" });
     }
   };
@@ -89,13 +88,19 @@ const LoginAdmin = () => {
             )}
           />
 
-          <div className="w-full space-x-3 flex justify-between">
-            <Button type="submit" className="">
-              Submit
-            </Button>
-            <a href="/register-admin" className="text-blue-500 translate-y-2">
+          <div className="w-full grid md:grid-cols-2 mt-2">
+            <a href="/register-admin" className="text-blue-500 ">
               Create an account?
             </a>
+            <Button type="submit" className="ml-6 hidden md:flex ">
+              Submit
+            </Button>
+            <a href="/register-admin" className="text-blue-500 ">
+              Forgot Password?
+            </a>
+            <Button type="submit" className=" md:hidden flex mt-4  ">
+              Submit
+            </Button>
           </div>
         </form>
       </Form>

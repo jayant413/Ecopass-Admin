@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { cookies } from "next/headers";
+import { ClientCookiesProvider } from "@/provider/cookieProvider";
 
 import { Toaster } from "@/components/ui/toaster";
 
@@ -19,8 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
         <Toaster />
+        <ClientCookiesProvider value={cookies().getAll()}>
+          {children}
+        </ClientCookiesProvider>
       </body>
     </html>
   );

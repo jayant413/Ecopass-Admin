@@ -1,12 +1,9 @@
-import LogOut from "./logout";
+import { redirect } from "next/navigation";
 
-const HomePage = ({ data, token }: any) => {
-  return (
-    <div>
-      <h3>Welcome to Ecopass onBoarding system</h3>
-      <LogOut token={token} />
-    </div>
-  );
+const HomePage = ({ data }: any) => {
+  redirect(`/organization/${data.organizations[0]._id}`);
+
+  return <div></div>;
 };
 
 export default HomePage;

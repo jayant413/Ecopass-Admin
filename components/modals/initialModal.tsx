@@ -55,17 +55,18 @@ export const InitialModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const token = localStorage.getItem("token");
       const response = await api.post("/admin/create-organization", {
         name: values.name,
-        token: token,
       });
 
       if (response.data.success) {
         toast({ title: "Organiazaion created successfully" });
         form.reset();
         router.refresh();
-      } else toast({ title: "Something went wrong" });
+      } else {
+        toast({ title: "Something went wrong" });
+        router.refresh();
+      }
     } catch (error) {
       toast({ title: "Something went wrong" });
     }

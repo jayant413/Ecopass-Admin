@@ -3,9 +3,12 @@ import Mounted from "@/components/mounted";
 
 const OrganizaionID = () => {
   return (
-    <Mounted>
-      <LogOut />
-    </Mounted>
+    // <Mounted>
+    //   <LogOut />
+    // </Mounted>
+    <div>
+      <span>Organization</span>
+    </div>
   );
 };
 

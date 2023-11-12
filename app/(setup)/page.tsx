@@ -17,13 +17,12 @@ export default async function Home() {
       },
     });
 
-    if (response.data.data.organizations[0].name)
-      return <HomePage data={response.data.data} token={token} />;
+    if (response?.data?.data?.organizations[0]?.name)
+      return <HomePage data={response.data.data} />;
     else return <InitialModal />;
   } catch (error) {
     console.log(
-      "Something went wrong while getting organization details",
-      error
+      "[(setup)/page.tsx] : Something went wrong while getting organization details"
     );
   }
 
