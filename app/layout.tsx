@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { ClientCookiesProvider } from "@/provider/cookieProvider";
 
 import { Toaster } from "@/components/ui/toaster";
+import { ModalProvider } from "@/provider/modalProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Toaster />
         <ClientCookiesProvider value={cookies().getAll()}>
+          <ModalProvider />
           {children}
         </ClientCookiesProvider>
       </body>

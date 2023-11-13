@@ -44,7 +44,7 @@ export default function StoreSwitcher({ className, items }: any) {
 
   const onStoreSelect = (org: { value: string; label: string }) => {
     setOpen(false);
-    router.push(`/organization/${org.value}`);
+    router.push(`/${org.value}`);
   };
 
   return (
