@@ -25,7 +25,7 @@ export type Passenger = {
   email_id: string;
   mobile_number: string;
   aadhaar_no: string;
-  registered_date: Date;
+  registered_date: string;
   balance: number;
 };
 
