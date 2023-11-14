@@ -36,10 +36,15 @@ const formSchema = z.object({
   mobile_number: z
     .string()
     .length(10, { message: "Enter a valid mobile number" }),
-  aadhaar_no: z.string().length(12, { message: "Enter a aadhaar number" }),
+  aadhaar_no: z
+    .string()
+    .length(12, { message: "Enter a valid aadhaar number" }),
   email_id: z.string().min(5, { message: "Enter a valid email id" }),
-  age: z.string().min(3).max(100, { message: "Enter a valid age" }),
-  balance: z.string(),
+  age: z
+    .string()
+    .min(3, { message: "Enter a valid age" })
+    .max(100, { message: "Enter a valid age" }),
+  balance: z.string().min(0),
 });
 
 export const RegisterPassenger = () => {

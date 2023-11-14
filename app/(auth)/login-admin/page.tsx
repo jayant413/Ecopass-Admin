@@ -56,54 +56,67 @@ const LoginAdmin = () => {
   };
 
   return (
-    <div className="bg-white py-5 px-5 rounded-md">
-      <Form {...form}>
-        <h4 className="font-bold text-xl text-gray-700 mb-4">Admin Login</h4>
+    <div className="space-y-5">
+      <Button
+        onClick={() => {
+          // onSubmit({
+          //   email_id: "test@gmail.com",
+          //   password: "123",
+          // });
+          router.push("/demo123user");
+        }}
+      >
+        Demo Log in
+      </Button>
+      <div className="bg-white py-5 px-5 rounded-md">
+        <Form {...form}>
+          <h4 className="font-bold text-xl text-gray-700 mb-4">Admin Login</h4>
 
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-          <FormField
-            control={form.control}
-            name="email_id"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Admin Email ID</FormLabel>
-                <FormControl>
-                  <Input placeholder="Email ID" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="Password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <FormField
+              control={form.control}
+              name="email_id"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Admin Email ID</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Email ID" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="Password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <div className="w-full grid md:grid-cols-2 mt-2">
-            <a href="/register-admin" className="text-blue-500 ">
-              Create an account?
-            </a>
-            <Button type="submit" className="ml-6 hidden md:flex ">
-              Submit
-            </Button>
-            <a href="/register-admin" className="text-blue-500 ">
-              Forgot Password?
-            </a>
-            <Button type="submit" className=" md:hidden flex mt-4  ">
-              Submit
-            </Button>
-          </div>
-        </form>
-      </Form>
+            <div className="w-full grid md:grid-cols-2 mt-2">
+              <a href="/register-admin" className="text-blue-500 ">
+                Create an account?
+              </a>
+              <Button type="submit" className="ml-6 hidden md:flex ">
+                Submit
+              </Button>
+              <a href="/register-admin" className="text-blue-500 ">
+                Forgot Password?
+              </a>
+              <Button type="submit" className=" md:hidden flex mt-4  ">
+                Submit
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { ClientCookiesProvider } from "@/provider/cookieProvider";
 
 import { Toaster } from "@/components/ui/toaster";
 import { ModalProvider } from "@/provider/modalProvider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,8 +25,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <Toaster />
         <ClientCookiesProvider value={cookies().getAll()}>
-          <ModalProvider />
-          {children}
+          <TooltipProvider>
+            <ModalProvider />
+            {children}
+          </TooltipProvider>
         </ClientCookiesProvider>
       </body>
     </html>

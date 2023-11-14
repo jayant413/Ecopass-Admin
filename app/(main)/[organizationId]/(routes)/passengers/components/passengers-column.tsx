@@ -1,7 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ChevronsUpDown, MoreHorizontal, Pencil, Trash } from "lucide-react";
+import {
+  ChevronsUpDown,
+  MoreHorizontal,
+  Pencil,
+  Trash,
+  User,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,7 +25,7 @@ export type Passenger = {
   email_id: string;
   mobile_number: string;
   aadhaar_no: string;
-  age: number;
+  registered_date: Date;
   balance: number;
 };
 
@@ -58,21 +64,31 @@ export const columns: ColumnDef<Passenger>[] = [
   },
   {
     accessorKey: "email_id",
-    header: "Email Id",
-  },
-  {
-    accessorKey: "aadhaar_no",
-    header: "Aadhaar no",
-  },
-  {
-    accessorKey: "age",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Age
+          Email Id
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "aadhaar_no",
+    header: "Aadhaar no",
+  },
+  {
+    accessorKey: "registered_date",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Registerd date
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -80,6 +96,15 @@ export const columns: ColumnDef<Passenger>[] = [
   },
   {
     accessorKey: "balance",
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("balance"));
+      const formatted = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+      }).format(amount);
+
+      return <div className="text-right font-medium">{formatted}</div>;
+    },
     header: ({ column }) => {
       return (
         <Button
@@ -108,6 +133,12 @@ export const columns: ColumnDef<Passenger>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(payment.id)}
+            >
+              <User className="h-4 w-4 mr-1" /> View passenger details
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >

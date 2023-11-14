@@ -9,7 +9,6 @@ import { ProfileDropDown } from "./profile-dropdown";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
 
@@ -31,16 +30,14 @@ const NavigationBar = () => {
         <StoreSwitcher items={organizations} />
         <MainNav className="mx-6" />
         <div className="ml-auto flex items-center -space-x-1 space-y-1  ">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <ProfileDropDown />
-              </TooltipTrigger>
-              <TooltipContent className="bg-black text-white rounded-md px-2 py-1 text-sm">
-                <p>Your profile</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <ProfileDropDown />
+            </TooltipTrigger>
+            <TooltipContent className="bg-black text-white rounded-md px-2 py-1 text-sm">
+              <p>Your profile</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </div>
     </div>

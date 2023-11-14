@@ -54,7 +54,7 @@ function PassengersTable<TData, TValue>({
   });
 
   return (
-    <div className="pr-5">
+    <div className="md:pr-5 px-1">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter emails..."
