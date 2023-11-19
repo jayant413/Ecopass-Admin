@@ -29,9 +29,9 @@ import { useToast } from "../ui/use-toast";
 import { useModal } from "@/hooks/use-modal";
 
 const formSchema = z.object({
-  rfid_no: z.string().min(5, { message: "Enter a valid RFID number" }),
+  id_card_no: z.string().min(5, { message: "Enter a valid ID card number" }),
   name: z.string().min(1, {
-    message: "Passenger name is required",
+    message: "Conductor name is required",
   }),
   mobile_number: z
     .string()
@@ -40,18 +40,13 @@ const formSchema = z.object({
     .string()
     .length(12, { message: "Enter a valid aadhaar number" }),
   email_id: z.string().min(5, { message: "Enter a valid email id" }),
-  age: z
-    .string()
-    .min(3, { message: "Enter a valid age" })
-    .max(100, { message: "Enter a valid age" }),
-  balance: z.string().min(0),
 });
 
-export const RegisterPassenger = () => {
+export const RegisterConductor = () => {
   const { isOpen, type, onClose } = useModal();
   const [isMounted, setIsMounted] = useState(false);
 
-  const isModalOpen = isOpen && type === "registerPassenger";
+  const isModalOpen = isOpen && type === "registerConductor";
 
   const router = useRouter();
   const { toast } = useToast();
@@ -63,13 +58,11 @@ export const RegisterPassenger = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      rfid_no: "",
+      id_card_no: "",
       name: "",
       mobile_number: "",
       aadhaar_no: "",
       email_id: "",
-      age: "",
-      balance: "",
     },
   });
 
@@ -103,10 +96,10 @@ export const RegisterPassenger = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Register Passenger
+            Register Conductor
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            Provide passenger details to register
+            Provide conductor details to register
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -115,17 +108,17 @@ export const RegisterPassenger = () => {
               <div className="translate-x-3 pr-3">
                 <FormField
                   control={form.control}
-                  name="rfid_no"
+                  name="id_card_no"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                        Passenger's RFID Number
+                        Conductor's ID card
                       </FormLabel>
                       <FormControl>
                         <Input
                           disabled={isLoading}
                           className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                          placeholder="RFID number"
+                          placeholder="ID Card"
                           {...field}
                         />
                       </FormControl>
@@ -140,7 +133,7 @@ export const RegisterPassenger = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Passenger's name
+                      Conductor's name
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -160,7 +153,7 @@ export const RegisterPassenger = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Passenger's mobile number
+                      Conductor's mobile number
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -181,7 +174,7 @@ export const RegisterPassenger = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Passenger's Email ID
+                      Conductor's Email ID
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -195,48 +188,7 @@ export const RegisterPassenger = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="age"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Passenger's Age
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        type="number"
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Age"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="balance"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Passenger's Card Balance
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        type="number"
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Balance"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
               <div className="col-span-2">
                 <FormField
                   control={form.control}
@@ -244,7 +196,7 @@ export const RegisterPassenger = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                        Passenger's Aadhaar Number
+                        Conductor's Aadhaar Number
                       </FormLabel>
                       <FormControl>
                         <Input

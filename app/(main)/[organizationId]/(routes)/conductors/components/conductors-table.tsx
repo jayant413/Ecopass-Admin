@@ -39,7 +39,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-function PassengersTable<TData, TValue>({
+function ConductorsTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -182,4 +182,4 @@ function PassengersTable<TData, TValue>({
   );
 }
 
-export default PassengersTable;
+export default ConductorsTable;

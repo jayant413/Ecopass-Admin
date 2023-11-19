@@ -1,6 +1,7 @@
 "use client";
 
 import LogoutModal from "@/components/modals/logout-modal";
+import { RegisterConductor } from "@/components/modals/register-conductor-modal";
 import { RegisterPassenger } from "@/components/modals/register-passenger-modal";
 import { useEffect, useState } from "react";
 
@@ -19,6 +20,7 @@ export const ModalProvider = () => {
     <>
       <RegisterPassenger />
       <LogoutModal />
+      <RegisterConductor />
     </>
   );
 };

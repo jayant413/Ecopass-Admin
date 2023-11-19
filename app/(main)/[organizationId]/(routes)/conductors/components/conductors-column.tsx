@@ -19,18 +19,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export type Passenger = {
+export type Conductor = {
   id: string;
-  rfid_no: string;
+  id_card_no: string;
   name: string;
   email_id: string;
   mobile_number: string;
   aadhaar_no: string;
   registered_date: string;
-  balance: number;
 };
 
-export const columns: ColumnDef<Passenger>[] = [
+export const columns: ColumnDef<Conductor>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -51,14 +50,14 @@ export const columns: ColumnDef<Passenger>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "rfid_no",
+    accessorKey: "id_card_no",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          RFID number
+          ID Card number
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -100,30 +99,6 @@ export const columns: ColumnDef<Passenger>[] = [
     accessorKey: "aadhaar_no",
     header: "Aadhaar number",
   },
-
-  {
-    accessorKey: "balance",
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("balance"));
-      const formatted = new Intl.NumberFormat("en-IN", {
-        style: "currency",
-        currency: "INR",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Card Balance
-          <ChevronsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
   {
     accessorKey: "registered_date",
     header: ({ column }) => {
@@ -157,17 +132,17 @@ export const columns: ColumnDef<Passenger>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
-              <User className="h-4 w-4 mr-1" /> View passenger details
+              <User className="h-4 w-4 mr-1" /> View conductor details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
-              <Pencil className="h-4 w-4 mr-1" /> Update passenger details
+              <Pencil className="h-4 w-4 mr-1" /> Update conductor details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-red-500">
-              <Trash className="h-4 w-4 mr-1" /> Delete passneger details
+              <Trash className="h-4 w-4 mr-1" /> Delete conductor details
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
