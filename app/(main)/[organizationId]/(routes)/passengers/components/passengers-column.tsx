@@ -110,7 +110,7 @@ export const columns: ColumnDef<Passenger>[] = [
         currency: "INR",
       }).format(amount);
 
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className="pl-4 font-medium">{formatted}</div>;
     },
     header: ({ column }) => {
       return (
@@ -124,15 +124,29 @@ export const columns: ColumnDef<Passenger>[] = [
       );
     },
   },
+  // {
+  //   accessorKey: "createdAt",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Registerd date
+  //         <ChevronsUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  // },
   {
-    accessorKey: "registered_date",
+    accessorKey: "age",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Registerd date
+          Age
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );

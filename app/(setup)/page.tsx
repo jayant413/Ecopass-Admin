@@ -1,5 +1,5 @@
 import HomePage from "@/components/homepage/home";
-import { InitialModal } from "@/components/modals/initialModal";
+import { InitialModal } from "@/components/modals/initial-modal";
 import api from "@/helpers/api";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";

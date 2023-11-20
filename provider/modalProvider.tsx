@@ -1,5 +1,6 @@
 "use client";
 
+import { CreateOranizationModal } from "@/components/modals/create-organization-modal";
 import LogoutModal from "@/components/modals/logout-modal";
 import { RegisterConductor } from "@/components/modals/register-conductor-modal";
 import { RegisterPassenger } from "@/components/modals/register-passenger-modal";
@@ -21,6 +22,7 @@ export const ModalProvider = () => {
       <RegisterPassenger />
       <LogoutModal />
       <RegisterConductor />
+      <CreateOranizationModal />
     </>
   );
 };

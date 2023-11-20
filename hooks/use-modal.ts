@@ -6,6 +6,7 @@ export type ModalType =
   | "registerBus"
   | "registerBusRoute"
   | "changeOrganizationName"
+  | "createOrganization"
   | "deleteOrganization"
   | "deleteServer"
   | "logout";

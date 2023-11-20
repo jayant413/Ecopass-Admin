@@ -18,6 +18,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Building2, Check, ChevronsUpDown, PlusCircle } from "lucide-react";
+import { useModal } from "@/hooks/use-modal";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -30,6 +31,7 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 export default function StoreSwitcher({ className, items }: any) {
   const params = useParams();
   const router = useRouter();
+  const { onOpen } = useModal();
 
   const formattedItems = items.map((item: any) => ({
     label: item.name,
@@ -94,7 +96,11 @@ export default function StoreSwitcher({ className, items }: any) {
           <CommandSeparator />
           <CommandList>
             <CommandGroup>
-              <CommandItem onSelect={() => {}}>
+              <CommandItem
+                onSelect={() => {
+                  onOpen("createOrganization");
+                }}
+              >
                 <PlusCircle className="mr-2 h-5 w-5" />
                 Create Organization
               </CommandItem>

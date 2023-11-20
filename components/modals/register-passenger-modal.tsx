@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import api from "@/helpers/api";
 import { useToast } from "../ui/use-toast";
 import { useModal } from "@/hooks/use-modal";
@@ -42,8 +42,8 @@ const formSchema = z.object({
   email_id: z.string().min(5, { message: "Enter a valid email id" }),
   age: z
     .string()
-    .min(3, { message: "Enter a valid age" })
-    .max(100, { message: "Enter a valid age" }),
+    .min(1, { message: "Enter a valid age" })
+    .max(4, { message: "Enter a valid age" }),
   balance: z.string().min(0),
 });
 
@@ -54,6 +54,7 @@ export const RegisterPassenger = () => {
   const isModalOpen = isOpen && type === "registerPassenger";
 
   const router = useRouter();
+  const { organizationId } = useParams();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -77,20 +78,34 @@ export const RegisterPassenger = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await api.post("/admin/create-organization", {
-        name: values.name,
-      });
+      const response = await api.post(
+        `/admin/register-passenger/${organizationId}`,
+        {
+          rfid_no: values.rfid_no,
+          name: values.name,
+          mobile_number: values.mobile_number,
+          aadhaar_no: values.aadhaar_no,
+          email_id: values.email_id,
+          age: values.age,
+          balance: values.balance,
+        }
+      );
 
       if (response.data.success) {
-        toast({ title: "Organiazaion created successfully" });
+        toast({ title: "Passenger registered successfully" });
         form.reset();
         router.refresh();
+        onClose();
       } else {
         toast({ title: "Something went wrong" });
         router.refresh();
       }
-    } catch (error) {
-      toast({ title: "Something went wrong" });
+    } catch (error: any) {
+      if (error.response.status == 409)
+        toast({
+          title: `${error.response.data.message}`,
+        });
+      else toast({ title: "Something went wrong" });
     }
   };
 

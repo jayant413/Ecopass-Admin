@@ -1,7 +1,7 @@
 export const ConductorData = [
   {
     id: "1",
-    id_card_no: "rfid_no123",
+    id_card_no: "id_card_no123",
     name: "John Doe",
     mobile_number: "123-456-7890",
     email_id: "john.doe@example.com",
@@ -10,7 +10,7 @@ export const ConductorData = [
   },
   {
     id: "2",
-    id_card_no: "rfid_no456",
+    id_card_no: "id_card_no456",
     name: "Alice Smith",
     mobile_number: "987-654-3210",
     email_id: "alice.smith@example.com",
@@ -19,7 +19,7 @@ export const ConductorData = [
   },
   {
     id: "3",
-    id_card_no: "rfid_no789",
+    id_card_no: "id_card_no789",
     name: "Bob Johnson",
     mobile_number: "345-678-9012",
     email_id: "bob.johnson@example.com",
@@ -28,7 +28,7 @@ export const ConductorData = [
   },
   {
     id: "4",
-    id_card_no: "rfid_no321",
+    id_card_no: "id_card_no321",
     name: "Eva Brown",
     mobile_number: "876-543-2109",
     email_id: "eva.brown@example.com",
@@ -37,7 +37,7 @@ export const ConductorData = [
   },
   {
     id: "5",
-    id_card_no: "rfid_no654",
+    id_card_no: "id_card_no654",
     name: "David White",
     mobile_number: "234-567-8901",
     email_id: "david.white@example.com",
@@ -46,7 +46,7 @@ export const ConductorData = [
   },
   {
     id: "6",
-    id_card_no: "rfid_no987",
+    id_card_no: "id_card_no987",
     name: "Grace Davis",
     mobile_number: "654-321-0987",
     email_id: "grace.davis@example.com",
@@ -55,7 +55,7 @@ export const ConductorData = [
   },
   {
     id: "7",
-    id_card_no: "rfid_no234",
+    id_card_no: "id_card_no234",
     name: "Charlie Wilson",
     mobile_number: "876-543-2109",
     email_id: "charlie.wilson@example.com",
@@ -64,7 +64,7 @@ export const ConductorData = [
   },
   {
     id: "8",
-    id_card_no: "rfid_no567",
+    id_card_no: "id_card_no567",
     name: "Emma Taylor",
     mobile_number: "123-456-7890",
     email_id: "emma.taylor@example.com",
@@ -73,7 +73,7 @@ export const ConductorData = [
   },
   {
     id: "9",
-    id_card_no: "rfid_no012",
+    id_card_no: "id_card_no012",
     name: "Frank Harris",
     mobile_number: "345-678-9012",
     email_id: "frank.harris@example.com",
@@ -82,7 +82,7 @@ export const ConductorData = [
   },
   {
     id: "10",
-    id_card_no: "rfid_no345",
+    id_card_no: "id_card_no345",
     name: "Olivia Miller",
     mobile_number: "876-543-2109",
     email_id: "olivia.miller@example.com",
@@ -91,7 +91,7 @@ export const ConductorData = [
   },
   {
     id: "11",
-    id_card_no: "rfid_no678",
+    id_card_no: "id_card_no678",
     name: "Harry Wilson",
     mobile_number: "234-567-8901",
     email_id: "harry.wilson@example.com",
