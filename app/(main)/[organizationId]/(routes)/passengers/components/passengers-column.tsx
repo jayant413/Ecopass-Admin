@@ -181,7 +181,7 @@ export const columns: ColumnDef<Passenger>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-red-500">
-              <Trash className="h-4 w-4 mr-1" /> Delete passneger details
+              <Trash className="h-4 w-4 mr-1" /> Delete passenger details
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

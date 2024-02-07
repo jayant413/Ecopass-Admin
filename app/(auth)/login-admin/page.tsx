@@ -57,7 +57,7 @@ const LoginAdmin = () => {
 
   return (
     <div className="space-y-5">
-      <Button
+      {/* <Button
         onClick={() => {
           // onSubmit({
           //   email_id: "test@gmail.com",
@@ -67,7 +67,7 @@ const LoginAdmin = () => {
         }}
       >
         Demo Log in
-      </Button>
+      </Button> */}
       <div className="bg-white py-5 px-5 rounded-md">
         <Form {...form}>
           <h4 className="font-bold text-xl text-gray-700 mb-4">Admin Login</h4>

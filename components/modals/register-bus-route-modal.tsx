@@ -31,7 +31,7 @@ import { useModal } from "@/hooks/use-modal";
 const formSchema = z.object({
   id_card_no: z.string().min(5, { message: "Enter a valid ID card number" }),
   name: z.string().min(1, {
-    message: "Conductor name is required",
+    message: "Bus Route name is required",
   }),
   mobile_number: z
     .string()
@@ -42,12 +42,12 @@ const formSchema = z.object({
   email_id: z.string().min(5, { message: "Enter a valid email id" }),
 });
 
-export const RegisterConductor = () => {
+export const RegisterBusRoute = () => {
   const { isOpen, type, onClose } = useModal();
   const [isMounted, setIsMounted] = useState(false);
   const { organizationId } = useParams();
 
-  const isModalOpen = isOpen && type === "registerConductor";
+  const isModalOpen = isOpen && type === "registerBusRoute";
 
   const router = useRouter();
   const { toast } = useToast();
@@ -71,13 +71,16 @@ export const RegisterConductor = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await api.post(`/admin/register-conductor/${organizationId}`, {
-        id_card_no: values.id_card_no,
-        name: values.name,
-        mobile_number: values.mobile_number,
-        aadhaar_no: values.mobile_number,
-        email_id: values.email_id,
-      });
+      const response = await api.post(
+        `/admin/register-bus route/${organizationId}`,
+        {
+          id_card_no: values.id_card_no,
+          name: values.name,
+          mobile_number: values.mobile_number,
+          aadhaar_no: values.mobile_number,
+          email_id: values.email_id,
+        }
+      );
 
       if (response.data.success) {
         toast({ title: "Registered successfully" });
@@ -102,10 +105,10 @@ export const RegisterConductor = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Register Conductor
+            Register Bus Route
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            Provide conductor details to register
+            Provide bus route details to register
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -118,7 +121,7 @@ export const RegisterConductor = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                        Conductor's ID card
+                        Bus Route's ID card
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -139,7 +142,7 @@ export const RegisterConductor = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Conductor's name
+                      Bus Route's name
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -159,7 +162,7 @@ export const RegisterConductor = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Conductor's mobile number
+                      Bus Route's mobile number
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -180,7 +183,7 @@ export const RegisterConductor = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Conductor's Email ID
+                      Bus Route's Email ID
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -202,7 +205,7 @@ export const RegisterConductor = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                        Conductor's Aadhaar Number
+                        Bus Route's Aadhaar Number
                       </FormLabel>
                       <FormControl>
                         <Input

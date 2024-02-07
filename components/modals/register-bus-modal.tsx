@@ -27,29 +27,30 @@ import { useParams, useRouter } from "next/navigation";
 import api from "@/helpers/api";
 import { useToast } from "../ui/use-toast";
 import { useModal } from "@/hooks/use-modal";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const formSchema = z.object({
-  id_card_no: z.string().min(5, { message: "Enter a valid ID card number" }),
-  name: z.string().min(1, {
-    message: "Conductor name is required",
-  }),
-  mobile_number: z
-    .string()
-    .length(10, { message: "Enter a valid mobile number" }),
-  aadhaar_no: z
-    .string()
-    .length(12, { message: "Enter a valid aadhaar number" }),
-  email_id: z.string().min(5, { message: "Enter a valid email id" }),
+  bus_number: z.string().length(10, { message: "Enter a valid bus number" }),
+  route_name: z.string(),
+  route_number: z.string(),
 });
 
-export const RegisterConductor = () => {
+export const RegisterBus = () => {
   const { isOpen, type, onClose } = useModal();
   const [isMounted, setIsMounted] = useState(false);
-  const { organizationId } = useParams();
 
-  const isModalOpen = isOpen && type === "registerConductor";
+  const isModalOpen = isOpen && type === "registerBus";
 
   const router = useRouter();
+  const { organizationId } = useParams();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -59,11 +60,9 @@ export const RegisterConductor = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      id_card_no: "",
-      name: "",
-      mobile_number: "",
-      aadhaar_no: "",
-      email_id: "",
+      bus_number: "",
+      route_name: "",
+      route_number: "",
     },
   });
 
@@ -71,16 +70,14 @@ export const RegisterConductor = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await api.post(`/admin/register-conductor/${organizationId}`, {
-        id_card_no: values.id_card_no,
-        name: values.name,
-        mobile_number: values.mobile_number,
-        aadhaar_no: values.mobile_number,
-        email_id: values.email_id,
+      const response = await api.post(`/admin/register-bus/${organizationId}`, {
+        bus_number: values.bus_number,
+        route_name: values.route_name,
+        route_number: values.route_number,
       });
 
       if (response.data.success) {
-        toast({ title: "Registered successfully" });
+        toast({ title: "Bus registered successfully" });
         form.reset();
         router.refresh();
         onClose();
@@ -88,8 +85,12 @@ export const RegisterConductor = () => {
         toast({ title: "Something went wrong" });
         router.refresh();
       }
-    } catch (error) {
-      toast({ title: "Something went wrong" });
+    } catch (error: any) {
+      if (error.response.status == 409)
+        toast({
+          title: `${error.response.data.message}`,
+        });
+      else toast({ title: "Something went wrong" });
     }
   };
 
@@ -102,10 +103,10 @@ export const RegisterConductor = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Register Conductor
+            Register Bus
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            Provide conductor details to register
+            Provide bus details to register
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -114,17 +115,17 @@ export const RegisterConductor = () => {
               <div className="translate-x-3 pr-3">
                 <FormField
                   control={form.control}
-                  name="id_card_no"
+                  name="bus_number"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                        Conductor's ID card
+                        Bus number
                       </FormLabel>
                       <FormControl>
                         <Input
                           disabled={isLoading}
-                          className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                          placeholder="ID Card"
+                          className="text-black placeholder:text-black"
+                          placeholder="Bus number"
                           {...field}
                         />
                       </FormControl>
@@ -133,85 +134,71 @@ export const RegisterConductor = () => {
                   )}
                 />
               </div>
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Conductor's name
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Name Surname"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="mobile_number"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Conductor's mobile number
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        type="number"
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Mobile number"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email_id"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Conductor's Email ID
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Email id"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
+              <FormField
+                control={form.control}
+                name="route_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                      Route name
+                    </FormLabel>
+                    <FormControl>
+                      {/* <Input
+                        disabled={isLoading}
+                        type="text"
+                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                        placeholder="Route name"
+                        {...field}
+                      /> */}
+                      <Select>
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select a route name" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Route name</SelectLabel>
+                            <SelectItem value="pineapple">
+                              no results
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <div className="col-span-2">
                 <FormField
                   control={form.control}
-                  name="aadhaar_no"
+                  name="route_number"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                        Conductor's Aadhaar Number
+                        Route number
                       </FormLabel>
                       <FormControl>
-                        <Input
+                        {/* <Input
                           disabled={isLoading}
                           type="number"
                           className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                          placeholder="Aadhaar number"
+                          placeholder="Route number"
                           {...field}
-                        />
+                        /> */}
+                        <Select>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a route number" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Route name</SelectLabel>
+                              <SelectItem value="pineapple">
+                                no results
+                              </SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

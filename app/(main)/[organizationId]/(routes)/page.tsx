@@ -7,7 +7,7 @@ const OrganizaionID = () => {
     //   <LogOut />
     // </Mounted>
     <div>
-      <span>Organization</span>
+      <span>Organization Details</span>
     </div>
   );
 };

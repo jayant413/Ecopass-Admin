@@ -19,17 +19,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export type Conductor = {
+export type Bus = {
   id: string;
-  id_card_no: string;
+  rfid_no: string;
   name: string;
   email_id: string;
   mobile_number: string;
   aadhaar_no: string;
   registered_date: string;
+  balance: number;
 };
 
-export const columns: ColumnDef<Conductor>[] = [
+export const columns: ColumnDef<Bus>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -50,69 +51,47 @@ export const columns: ColumnDef<Conductor>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id_card_no",
+    accessorKey: "bus_number",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          ID Card number
+          Bus number
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "route_name",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          Route name
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "mobile_number",
-    header: "Mobile number",
-  },
-  {
-    accessorKey: "email_id",
+    accessorKey: "route_number",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email Id
+          Route number
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
-  {
-    accessorKey: "aadhaar_no",
-    header: "Aadhaar number",
-  },
-  // {
-  //   accessorKey: "createdAt",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         Registerd date
-  //         <ChevronsUpDown className="ml-2 h-4 w-4" />
-  //       </Button>
-  //     );
-  //   },
-  // },
   {
     header: "Actions",
     id: "actions",
@@ -132,17 +111,17 @@ export const columns: ColumnDef<Conductor>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
-              <User className="h-4 w-4 mr-1" /> View conductor details
+              <User className="h-4 w-4 mr-1" /> View Bus details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
-              <Pencil className="h-4 w-4 mr-1" /> Update conductor details
+              <Pencil className="h-4 w-4 mr-1" /> Update Bus details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-red-500">
-              <Trash className="h-4 w-4 mr-1" /> Delete conductor details
+              <Trash className="h-4 w-4 mr-1" /> Delete Bus details
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
