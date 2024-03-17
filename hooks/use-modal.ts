@@ -9,8 +9,8 @@ export type ModalType =
   | "createOrganization"
   | "deleteOrganization"
   | "deleteServer"
-  | "logout";
-
+  | "logout"
+  | "viewallstops";
 
 interface ModalStore {
   type: ModalType | null;

@@ -1,35 +1,34 @@
 "use client";
+import useSWR from "swr";
 import { columns } from "./components/bus-route-column";
-import BusSideBar from "./components/bus-route-sidebar";
-import BusTable from "./components/bus-route-table";
+import BusRouteSideBar from "./components/bus-route-sidebar";
+import BusRouteTable from "./components/bus-route-table";
 import api from "@/helpers/api";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { undefined } from "zod";
 
-const Bus = () => {
-  const { organizationId } = useParams();
-  const [passengerDetails, setPassengerDetails] = useState([]);
+const BusRoute = () => {
+  const fetcher = async (url: string) => {
+    const response = await api.get(url);
 
-  const getPassengerData = async () => {
-    const pasdata = await api.get(
-      `/admin/get-oranization-all-passenger-details/${organizationId}`
-    );
-
-    setPassengerDetails(pasdata.data.data.passengerDetails);
+    return response.data.data.busrouteDetails;
   };
 
-  useEffect(() => {
-    getPassengerData();
-  }, []);
+  const { organizationId } = useParams();
+
+  const { data, error, isLoading } = useSWR(
+    `/admin/get-bus-routes/${organizationId}`,
+    fetcher
+  );
 
   return (
     <div>
       <div className=" my-5">
-        <BusSideBar />
+        <BusRouteSideBar />
       </div>
-      <BusTable columns={columns} data={passengerDetails} />
+      <BusRouteTable columns={columns} data={data == undefined ? [] : data} />
     </div>
   );
 };
 
-export default Bus;
+export default BusRoute;

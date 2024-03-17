@@ -18,9 +18,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useModal } from "@/hooks/use-modal";
+import { type } from "os";
+import api from "@/helpers/api";
+import { useParams, useRouter } from "next/navigation";
 
 export type Bus = {
-  id: string;
+  _id: string;
   rfid_no: string;
   name: string;
   email_id: string;
@@ -87,8 +91,25 @@ export const columns: ColumnDef<Bus>[] = [
     header: "Destination",
   },
   {
-    accessorKey: "Route Details",
-    header: "Route Details",
+    header: "Route All Stops",
+    id: "view",
+    cell: ({ row }) => {
+      const { onOpen, type, data } = useModal();
+      return (
+        <Button
+          variant="outline"
+          onClick={() => {
+            onOpen("viewallstops", row);
+          }}
+        >
+          view
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "number_of_stops",
+    header: "Number of Stops",
   },
 
   {
@@ -96,6 +117,8 @@ export const columns: ColumnDef<Bus>[] = [
     id: "actions",
     cell: ({ row }) => {
       const payment = row.original;
+      const { organizationId } = useParams();
+      const router = useRouter();
 
       return (
         <DropdownMenu>
@@ -108,19 +131,32 @@ export const columns: ColumnDef<Bus>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => {
+                router.push(
+                  `/${organizationId}/bus-routes/route-pricing/${row.original._id}`
+                );
+              }}
             >
-              <User className="h-4 w-4 mr-1" /> View Bus details
+              <User className="h-4 w-4 mr-1" /> View Bus route details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(payment._id)}
             >
-              <Pencil className="h-4 w-4 mr-1" /> Update Bus details
+              <Pencil className="h-4 w-4 mr-1" /> Update Bus route details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-red-500">
-              <Trash className="h-4 w-4 mr-1" /> Delete Bus details
+              <Button
+                variant="outline"
+                onClick={() => {
+                  api.put(
+                    `/admin/delete-bus-route/${organizationId}/${row.original._id}`
+                  );
+                }}
+              >
+                <Trash className="h-4 w-4 mr-1" /> Delete Bus route details
+              </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -33,13 +33,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowBigDown, ArrowDown, ArrowDownIcon } from "lucide-react";
+import PassengersTable from "../../buses/components/buses-table";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-function PassengersTable<TData, TValue>({
+function BusRouteTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -132,7 +133,7 @@ function PassengersTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table?.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
@@ -182,4 +183,4 @@ function PassengersTable<TData, TValue>({
   );
 }
 
-export default PassengersTable;
+export default BusRouteTable;

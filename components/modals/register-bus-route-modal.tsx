@@ -22,35 +22,29 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useParams, useRouter } from "next/navigation";
-import api from "@/helpers/api";
+import { redirect, useParams, useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 import { useModal } from "@/hooks/use-modal";
+import api from "@/helpers/api";
 
 const formSchema = z.object({
-  id_card_no: z.string().min(5, { message: "Enter a valid ID card number" }),
-  name: z.string().min(1, {
-    message: "Bus Route name is required",
-  }),
-  mobile_number: z
-    .string()
-    .length(10, { message: "Enter a valid mobile number" }),
-  aadhaar_no: z
-    .string()
-    .length(12, { message: "Enter a valid aadhaar number" }),
-  email_id: z.string().min(5, { message: "Enter a valid email id" }),
+  route_name: z.string(),
+  route_number: z.string(),
+  stops_count: z.string().length(1),
 });
 
 export const RegisterBusRoute = () => {
   const { isOpen, type, onClose } = useModal();
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [stops, setStops] = useState<string[]>([]);
+  const params = useParams();
+  const router = useRouter();
   const { organizationId } = useParams();
+  const { toast } = useToast();
 
   const isModalOpen = isOpen && type === "registerBusRoute";
-
-  const router = useRouter();
-  const { toast } = useToast();
 
   useEffect(() => {
     setIsMounted(true);
@@ -59,41 +53,52 @@ export const RegisterBusRoute = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      id_card_no: "",
-      name: "",
-      mobile_number: "",
-      aadhaar_no: "",
-      email_id: "",
+      route_name: "",
+      route_number: "",
+      stops_count: "",
     },
   });
 
   const isLoading = form.formState.isSubmitting;
 
+  const numberOfStops = () => {
+    let count = Number(form.getValues().stops_count);
+    setStops(Array(count).fill(null));
+    return count;
+  };
+
+  useEffect(() => {
+    numberOfStops();
+  }, [form.getValues().stops_count]);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await api.post(
-        `/admin/register-bus route/${organizationId}`,
+        `/admin/register-bus-route/${organizationId}`,
         {
-          id_card_no: values.id_card_no,
-          name: values.name,
-          mobile_number: values.mobile_number,
-          aadhaar_no: values.mobile_number,
-          email_id: values.email_id,
+          route_name: values.route_name,
+          route_number: values.route_number,
+          stops_count: values.stops_count,
+          stops: stops,
         }
       );
+      onClose();
 
-      if (response.data.success) {
-        toast({ title: "Registered successfully" });
-        form.reset();
-        router.refresh();
-        onClose();
-      } else {
-        toast({ title: "Something went wrong" });
-        router.refresh();
-      }
+      toast({ title: "Bus Route registered successfully." });
+      router.refresh();
+      router.push(
+        `/${organizationId}/bus-routes/route-pricing/${response.data.data._id}`
+      );
     } catch (error) {
-      toast({ title: "Something went wrong" });
+      console.log(error);
+      toast({ title: "Something went wrong." });
     }
+  };
+
+  const handleOnChangeStops = (event: any, index: number) => {
+    let newStops = [...stops];
+    newStops[index] = event.target.value;
+    setStops(newStops);
   };
 
   if (!isMounted) {
@@ -117,17 +122,17 @@ export const RegisterBusRoute = () => {
               <div className="translate-x-3 pr-3">
                 <FormField
                   control={form.control}
-                  name="id_card_no"
+                  name="route_name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                        Bus Route's ID card
+                        Bus Route Name
                       </FormLabel>
                       <FormControl>
                         <Input
                           disabled={isLoading}
                           className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                          placeholder="ID Card"
+                          placeholder="Route name"
                           {...field}
                         />
                       </FormControl>
@@ -138,58 +143,17 @@ export const RegisterBusRoute = () => {
               </div>
               <FormField
                 control={form.control}
-                name="name"
+                name="route_number"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Bus Route's name
+                      Bus Route Number
                     </FormLabel>
                     <FormControl>
                       <Input
                         disabled={isLoading}
                         className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Name Surname"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="mobile_number"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Bus Route's mobile number
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        type="number"
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Mobile number"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email_id"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Bus Route's Email ID
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Email id"
+                        placeholder="Route number"
                         {...field}
                       />
                     </FormControl>
@@ -201,18 +165,18 @@ export const RegisterBusRoute = () => {
               <div className="col-span-2">
                 <FormField
                   control={form.control}
-                  name="aadhaar_no"
+                  name="stops_count"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                        Bus Route's Aadhaar Number
+                        Number of Stops
                       </FormLabel>
                       <FormControl>
                         <Input
-                          disabled={isLoading}
                           type="number"
+                          disabled={isLoading}
                           className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                          placeholder="Aadhaar number"
+                          placeholder="Including source and destination"
                           {...field}
                         />
                       </FormControl>
@@ -221,9 +185,38 @@ export const RegisterBusRoute = () => {
                   )}
                 />
               </div>
+              {stops.map((stop, index) => {
+                return (
+                  <div className="mt-2">
+                    <Label className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                      {index == 0
+                        ? "Source"
+                        : index == stops.length - 1
+                        ? "Destination"
+                        : `Stop ${index + 1}`}
+                    </Label>
+                    <Input
+                      type="text"
+                      disabled={isLoading}
+                      className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                      value={stop}
+                      onChange={(event) => {
+                        handleOnChangeStops(event, index);
+                      }}
+                      placeholder={`${
+                        index == 0
+                          ? "Starting point"
+                          : index == stops.length - 1
+                          ? "Ending point"
+                          : `Stop ${index + 1}`
+                      }`}
+                    />
+                  </div>
+                );
+              })}
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button variant="default" disabled={isLoading}>
+              <Button type="submit" variant="default" disabled={isLoading}>
                 Register
               </Button>
             </DialogFooter>
