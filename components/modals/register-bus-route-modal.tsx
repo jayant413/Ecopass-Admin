@@ -28,6 +28,7 @@ import { redirect, useParams, useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 import { useModal } from "@/hooks/use-modal";
 import api from "@/helpers/api";
+import { mutate } from "swr";
 
 const formSchema = z.object({
   route_name: z.string(),
@@ -57,6 +58,7 @@ export const RegisterBusRoute = () => {
       route_number: "",
       stops_count: "",
     },
+    mode: "onSubmit",
   });
 
   const isLoading = form.formState.isSubmitting;
@@ -82,13 +84,19 @@ export const RegisterBusRoute = () => {
           stops: stops,
         }
       );
-      onClose();
+      if (response.data.success) {
+        onClose();
 
-      toast({ title: "Bus Route registered successfully." });
-      router.refresh();
-      router.push(
-        `/${organizationId}/bus-routes/route-pricing/${response.data.data._id}`
-      );
+        toast({ title: "Bus Route registered successfully." });
+        router.refresh();
+        router.push(
+          `/${organizationId}/bus-routes/${response.data.data._id}/route-pricing`
+        );
+        form.reset();
+        mutate(`/admin/get-bus-routes/${organizationId}`);
+      } else {
+        toast({ title: "Something went wrong." });
+      }
     } catch (error) {
       console.log(error);
       toast({ title: "Something went wrong." });

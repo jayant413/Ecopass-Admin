@@ -20,14 +20,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export type Bus = {
-  id: string;
-  rfid_no: string;
-  name: string;
-  email_id: string;
-  mobile_number: string;
-  aadhaar_no: string;
-  registered_date: string;
-  balance: number;
+  busNumber: string;
+  routeName: string;
+  routeNumber: string;
+  conductorName: string;
 };
 
 export const columns: ColumnDef<Bus>[] = [
@@ -51,7 +47,7 @@ export const columns: ColumnDef<Bus>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "bus_number",
+    accessorKey: "busNumber",
     header: ({ column }) => {
       return (
         <Button
@@ -65,7 +61,11 @@ export const columns: ColumnDef<Bus>[] = [
     },
   },
   {
-    accessorKey: "route_name",
+    accessorKey: "conductorName",
+    header: "Conductor name",
+  },
+  {
+    accessorKey: "routeName",
     header: ({ column }) => {
       return (
         <Button
@@ -79,7 +79,7 @@ export const columns: ColumnDef<Bus>[] = [
     },
   },
   {
-    accessorKey: "route_number",
+    accessorKey: "routeNumber",
     header: ({ column }) => {
       return (
         <Button
@@ -108,15 +108,11 @@ export const columns: ColumnDef<Bus>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
+            <DropdownMenuItem>
               <User className="h-4 w-4 mr-1" /> View Bus details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
+            <DropdownMenuItem>
               <Pencil className="h-4 w-4 mr-1" /> Update Bus details
             </DropdownMenuItem>
             <DropdownMenuSeparator />

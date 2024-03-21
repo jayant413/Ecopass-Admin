@@ -41,20 +41,47 @@ const formSchema = z.object({
   bus_number: z.string().length(10, { message: "Enter a valid bus number" }),
   route_name: z.string(),
   route_number: z.string(),
+  conductor_name: z.string(),
 });
 
 export const RegisterBus = () => {
+  const router = useRouter();
   const { isOpen, type, onClose } = useModal();
   const [isMounted, setIsMounted] = useState(false);
+  const [conductorDetails, setConductorDetails] = useState<any>([]);
+  const [busData, setBusData] = useState<any>([]);
+
+  const { toast } = useToast();
+  const { organizationId } = useParams();
 
   const isModalOpen = isOpen && type === "registerBus";
 
-  const router = useRouter();
-  const { organizationId } = useParams();
-  const { toast } = useToast();
+  const GET_OrganizationConductors = async (url: string) => {
+    const response = await api.get(url);
+
+    if (response.data.success) {
+      setConductorDetails(response.data.data.conductorDetails);
+    } else {
+      toast({ title: "Something went wrong" });
+    }
+  };
+
+  const GET_BusRoutes = async (url: string) => {
+    const response = await api.get(url);
+
+    if (response.data.success) {
+      setBusData(response.data.data.busrouteDetails);
+    } else {
+      toast({ title: "Something went wrong" });
+    }
+  };
 
   useEffect(() => {
     setIsMounted(true);
+    GET_OrganizationConductors(
+      `/admin/get-oranization-all-conductor-details/${organizationId}`
+    );
+    GET_BusRoutes(`/admin/get-bus-routes/${organizationId}`);
   }, []);
 
   const form = useForm({
@@ -63,6 +90,7 @@ export const RegisterBus = () => {
       bus_number: "",
       route_name: "",
       route_number: "",
+      conductor_name: "",
     },
   });
 
@@ -74,6 +102,7 @@ export const RegisterBus = () => {
         bus_number: values.bus_number,
         route_name: values.route_name,
         route_number: values.route_number,
+        conductor_name: values.conductor_name,
       });
 
       if (response.data.success) {
@@ -137,30 +166,35 @@ export const RegisterBus = () => {
 
               <FormField
                 control={form.control}
-                name="route_name"
+                name="route_number"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Route name
+                      Route number
                     </FormLabel>
                     <FormControl>
-                      {/* <Input
-                        disabled={isLoading}
-                        type="text"
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Route name"
-                        {...field}
-                      /> */}
-                      <Select>
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Select a route name" />
+                      <Select
+                        disabled={form.formState.isLoading}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a route number" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectLabel>Route name</SelectLabel>
-                            <SelectItem value="pineapple">
-                              no results
-                            </SelectItem>
+                            <SelectLabel>Route number</SelectLabel>
+                            {busData.map((d: any, index: number) => {
+                              return (
+                                <SelectItem
+                                  value={`${d.route_number}`}
+                                  key={index}
+                                >
+                                  {d.route_number}
+                                </SelectItem>
+                              );
+                            })}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -172,30 +206,75 @@ export const RegisterBus = () => {
               <div className="col-span-2">
                 <FormField
                   control={form.control}
-                  name="route_number"
+                  name="route_name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                        Route number
+                        Route name
                       </FormLabel>
                       <FormControl>
-                        {/* <Input
-                          disabled={isLoading}
-                          type="number"
-                          className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                          placeholder="Route number"
-                          {...field}
-                        /> */}
-                        <Select>
+                        <Select
+                          disabled={form.formState.isLoading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          defaultValue={field.value}
+                        >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a route number" />
+                            <SelectValue placeholder="Select a route name" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
                               <SelectLabel>Route name</SelectLabel>
-                              <SelectItem value="pineapple">
-                                no results
-                              </SelectItem>
+                              {busData.map((d: any, index: number) => {
+                                return (
+                                  <SelectItem
+                                    value={`${d.route_name}`}
+                                    key={index}
+                                  >
+                                    {d.route_name}
+                                  </SelectItem>
+                                );
+                              })}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="col-span-2">
+                <FormField
+                  control={form.control}
+                  name="conductor_name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                        Conductor Name
+                      </FormLabel>
+                      <FormControl>
+                        <Select
+                          disabled={form.formState.isLoading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a Conductor name" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Conductor name</SelectLabel>
+                              {conductorDetails.map(
+                                (cond: any, index: number) => {
+                                  return (
+                                    <SelectItem value={cond.name}>
+                                      {cond.name}
+                                    </SelectItem>
+                                  );
+                                }
+                              )}
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -207,7 +286,10 @@ export const RegisterBus = () => {
               </div>
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button variant="default" disabled={isLoading}>
+              <Button
+                variant="default"
+                disabled={!form.formState.isValid || isLoading}
+              >
                 Register
               </Button>
             </DialogFooter>

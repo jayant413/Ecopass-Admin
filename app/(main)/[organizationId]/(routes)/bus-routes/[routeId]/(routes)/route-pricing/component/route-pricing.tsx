@@ -1,6 +1,11 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+interface Segment {
+  fromto: string;
+  ticketPrice: number;
+}
+
 const RouteSegmentPricing = ({ data, combo, setCombo, dest, reverse }: any) => {
   return (
     <div>
@@ -18,26 +23,26 @@ const RouteSegmentPricing = ({ data, combo, setCombo, dest, reverse }: any) => {
         </Label>
       )}
       <div className="grid grid-cols-3 space-x-7 space-y-8">
-        {Object.keys(combo)?.map((stop: string, index: number) => {
+        {combo?.map((stop: Segment, index: number) => {
           return (
             <div
               key={index}
               className={index == 0 ? "translate-x-7 translate-y-8 mr-7" : ""}
             >
               <Label>
-                <span className="font-bold">{stop}</span>&nbsp;&nbsp; ticket
-                price &nbsp;₹
+                <span className="font-bold">{stop.fromto}</span>&nbsp;&nbsp;
+                ticket price &nbsp;₹
               </Label>
               <Input
                 placeholder="ticket price"
-                type="text"
-                value={combo[stop]}
+                value={stop.ticketPrice}
                 onChange={(e) => {
-                  setCombo({
-                    ...combo,
-                    [stop]: e.target.value,
-                  });
-                  console.log(combo);
+                  const updatedCombo = [...combo];
+                  updatedCombo[index] = {
+                    ...updatedCombo[index],
+                    ticketPrice: e.target.value,
+                  };
+                  setCombo(updatedCombo);
                 }}
               />
             </div>

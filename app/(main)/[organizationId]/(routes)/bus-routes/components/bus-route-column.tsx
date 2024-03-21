@@ -19,16 +19,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useModal } from "@/hooks/use-modal";
-import { type } from "os";
 import api from "@/helpers/api";
 import { useParams, useRouter } from "next/navigation";
+import { mutate } from "swr";
 
 export type Bus = {
   _id: string;
-  rfid_no: string;
-  name: string;
-  email_id: string;
-  mobile_number: string;
+  route_number: string;
+  route_name: string;
+  source: string;
   aadhaar_no: string;
   registered_date: string;
   balance: number;
@@ -133,7 +132,7 @@ export const columns: ColumnDef<Bus>[] = [
             <DropdownMenuItem
               onClick={() => {
                 router.push(
-                  `/${organizationId}/bus-routes/route-pricing/${row.original._id}`
+                  `/${organizationId}/bus-routes/${row.original._id}/view-bus-route`
                 );
               }}
             >
@@ -141,22 +140,26 @@ export const columns: ColumnDef<Bus>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment._id)}
+              onClick={() => {
+                router.push(
+                  `/${organizationId}/bus-routes/${row.original._id}/update-bus-route`
+                );
+              }}
             >
               <Pencil className="h-4 w-4 mr-1" /> Update Bus route details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-500">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  api.put(
-                    `/admin/delete-bus-route/${organizationId}/${row.original._id}`
-                  );
-                }}
-              >
-                <Trash className="h-4 w-4 mr-1" /> Delete Bus route details
-              </Button>
+            <DropdownMenuItem
+              className="text-red-500"
+              onClick={() => {
+                api.put(
+                  `/admin/delete-bus-route/${organizationId}/${row.original._id}`
+                );
+                router.refresh();
+                mutate(`/admin/get-bus-routes/${organizationId}`);
+              }}
+            >
+              <Trash className="h-4 w-4 mr-1" /> Delete Bus route details
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
