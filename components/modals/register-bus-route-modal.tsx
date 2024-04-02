@@ -85,13 +85,13 @@ export const RegisterBusRoute = () => {
         }
       );
       if (response.data.success) {
-        onClose();
-
-        toast({ title: "Bus Route registered successfully." });
-        router.refresh();
         router.push(
           `/${organizationId}/bus-routes/${response.data.data._id}/route-pricing`
         );
+
+        onClose();
+        toast({ title: "Bus Route registered successfully." });
+        router.refresh();
         form.reset();
         mutate(`/admin/get-bus-routes/${organizationId}`);
       } else {

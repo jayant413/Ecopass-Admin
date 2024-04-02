@@ -71,13 +71,16 @@ export const RegisterConductor = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await api.post(`/admin/register-conductor/${organizationId}`, {
-        id_card_no: values.id_card_no,
-        name: values.name,
-        mobile_number: values.mobile_number,
-        aadhaar_no: values.mobile_number,
-        email_id: values.email_id,
-      });
+      const response = await api.post(
+        `/admin/register-conductor/${organizationId}`,
+        {
+          id_card_no: values.id_card_no,
+          name: values.name,
+          mobile_number: values.mobile_number,
+          aadhaar_no: values.aadhaar_no,
+          email_id: values.email_id,
+        }
+      );
 
       if (response.data.success) {
         toast({ title: "Registered successfully" });

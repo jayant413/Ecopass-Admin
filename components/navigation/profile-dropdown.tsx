@@ -16,7 +16,7 @@ import {
   Users,
 } from "lucide-react";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 
 import { Button } from "@/components/ui/button";
@@ -39,6 +39,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useModal } from "@/hooks/use-modal";
 
 export function ProfileDropDown() {
+  const router = useRouter();
+  const { organizationId } = useParams();
   const { onOpen } = useModal();
 
   return (
@@ -53,7 +55,9 @@ export function ProfileDropDown() {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => router.push(`/${organizationId}/admin-profile`)}
+          >
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </DropdownMenuItem>

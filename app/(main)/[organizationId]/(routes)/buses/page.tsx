@@ -17,11 +17,12 @@ const Bus = () => {
     try {
       const response = await api.get(url);
       if (response.data.success) {
-        setIsMounted(true);
         return response.data.data.busDetails;
       } else throw new Error("Error while fetching organization bus details");
     } catch (error) {
       toast({ title: "Something went wrong." });
+    } finally {
+      setIsMounted(true);
     }
   };
 
