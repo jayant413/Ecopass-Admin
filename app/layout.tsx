@@ -11,7 +11,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "E-copass Admin",
+  title: "E-copass Admin Dashboard",
   description: "Admin Portal to register Conductor and Passengers",
 };
 

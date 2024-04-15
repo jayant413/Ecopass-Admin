@@ -75,12 +75,12 @@ function BusRouteTable<TData, TValue>({
     <div className="md:pr-5 px-1">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
+          placeholder="Filter route name..."
           value={
-            (table.getColumn("email_id")?.getFilterValue() as string) ?? ""
+            (table.getColumn("route_name")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("email_id")?.setFilterValue(event.target.value)
+            table.getColumn("route_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

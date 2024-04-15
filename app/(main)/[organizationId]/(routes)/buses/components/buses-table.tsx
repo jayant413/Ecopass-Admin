@@ -74,12 +74,12 @@ function PassengersTable<TData, TValue>({
     <div className="md:pr-5 px-1">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
+          placeholder="Filter bus number..."
           value={
-            (table.getColumn("email_id")?.getFilterValue() as string) ?? ""
+            (table.getColumn("busNumber")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("email_id")?.setFilterValue(event.target.value)
+            table.getColumn("busNumber")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
